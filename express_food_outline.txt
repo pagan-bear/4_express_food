@@ -1,0 +1,56 @@
+each day
+	2 mains
+	2 desserts
+	
+order
+	1 || * main & dessert
+	
+delivery status
+
+clients have 
+	id, name, address, phone, alt_phone, payment_method, payment_details, orders
+
+delivery_days have 
+	date (1), orders(0..*), 
+
+orders have 
+	id, dates (1), clients (1), menu_items (1..*), order_status (1..*), cost (1)
+
+menu_items 
+	have date (1), mains (*), desserts(*)
+		mains have
+			id, main_item (1..*)
+		desserts have
+			id, dessert_item (1..*)
+
+couriers have
+	id, courier_details, clients, orders
+
+
+client registers on website
+	client creates 0..* orders
+
+for date
+	client creates 1..* orders on website
+		client selects 1..* main
+			main selected from menu_item.date & menu_item.mains
+		client selects 1..* dessert
+			dessert selected from menu_item.date & menu_item.desserts
+
+client reviews menu
+
+client creates order
+
+client submits order
+
+provider receives order
+
+provider retrieves client details
+
+provider prepares order
+
+provider gives client details & order to courier
+
+courier delivers orders
+
+provider, client, courier, order, menu
