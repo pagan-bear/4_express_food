@@ -1,4 +1,4 @@
-SQL Query 1
+# SQL Query 1
 
 SELECT
 	US.FIRSTNAME, US.LASTNAME, AC.USERNAME, AC.EMAIL, AC.USERTYPE
@@ -11,7 +11,7 @@ WHERE
 ORDER BY
 	LASTNAME ASC
 
-SQL Query 2
+# SQL Query 2
 
 SELECT
 	U.FIRSTNAME AS COURIER, B.QUANTITY AS QTY, D.DISH, I.PRICE, (B.QUANTITY * I.PRICE) AS TOTAL
@@ -25,7 +25,7 @@ GROUP BY I.DISHID
         
 
 
-SQL Query 3
+# SQL Query 3
 
 INSERT INTO `Address` 
 	(`addressesID`, `userID`, `streetAddress`, `zipCode`, `city`, `state`, `idDefaultAddress`) 
@@ -39,11 +39,11 @@ VALUES
 	(NULL, '9', '234 WEST ASH STREET #3C', '10203-4983', 'NEW YORK', 'NY', '1'),
 	(NULL, '10', '555 EAST SYCAMORE STREET', '10133-3498', 'NEW YORK', 'NY', '1')
 	
-SQL Query 4
+# SQL Query 4
 INSERT INTO `Orders` (`orderID`, `customerID`, `courierID`, `timestamp`, `totalCost`)
 VALUES (NULL, '2', '10', '2018-02-03', '2')
 
-SQL Query 5
+# SQL Query 5
 
 SELECT
 	U.FIRSTNAME, U.LASTNAME, O.TIMESTAMP, O.ORDERID B.QUANTITY, D.DISH, I.PRICE AS UNIT_PRICE, (B.QUANTITY * I.PRICE) AS TOTAL
