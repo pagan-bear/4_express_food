@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 16, 2018 at 08:39 PM
+-- Generation Time: Feb 27, 2018 at 07:45 AM
 -- Server version: 5.6.35
 -- PHP Version: 7.1.8
 
@@ -46,7 +46,8 @@ INSERT INTO `AccessControl` (`accessControlID`, `username`, `password`, `email`,
 (7, 'foodie', '########', 'food_lover@email.com', '1975-08-21', 'customer', '(718) 440 1212', '', 0),
 (8, 'snackattack', '########', 'snack.attack@email.com', '1998-02-12', 'courier', '(646) 387 2956', '(212) 557 6352', 1),
 (9, 'jblundel', '########', 'jblundel@email.com', '1952-12-25', 'customer', '(212) 325 9999', '', 0),
-(10, 'lady_gaga', '########', 'lady_gaga@email.com', '1978-04-21', 'courier', '(718) 332 8984', '(646) 8734522', 1);
+(10, 'lady_gaga', '########', 'lady_gaga@email.com', '1978-04-21', 'courier', '(718) 332 8984', '(646) 8734522', 1),
+(11, 'fjsmythe', '########', 'fj.smythe@email.com', '1978-10-23', 'customer', '(718) 123 1254', '', 0);
 
 -- --------------------------------------------------------
 
@@ -212,25 +213,24 @@ INSERT INTO `Items` (`itemID`, `dishID`, `datetime`, `price`, `availStock`) VALU
 CREATE TABLE `Orders` (
   `orderID` smallint(5) UNSIGNED NOT NULL,
   `customerID` smallint(5) UNSIGNED NOT NULL,
-  `courierID` smallint(5) UNSIGNED NOT NULL,
-  `timestamp` datetime NOT NULL
+  `courierID` smallint(5) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `Orders`
 --
 
-INSERT INTO `Orders` (`orderID`, `customerID`, `courierID`, `timestamp`) VALUES
-(1, 1, 3, '2018-02-01 00:00:00'),
-(2, 4, 8, '2018-02-01 00:00:00'),
-(3, 1, 3, '2018-02-01 00:00:00'),
-(4, 4, 8, '2018-02-01 00:00:00'),
-(5, 5, 10, '2018-02-01 00:00:00'),
-(6, 2, 10, '2018-02-02 00:00:00'),
-(7, 6, 10, '2018-02-02 00:00:00'),
-(8, 7, 8, '2018-02-03 00:00:00'),
-(9, 9, 8, '2018-02-03 00:00:00'),
-(10, 2, 10, '2018-02-03 00:00:00');
+INSERT INTO `Orders` (`orderID`, `customerID`, `courierID`) VALUES
+(1, 1, 3),
+(2, 4, 8),
+(3, 1, 3),
+(4, 4, 8),
+(5, 5, 10),
+(6, 2, 10),
+(7, 6, 10),
+(8, 7, 8),
+(9, 9, 8),
+(10, 2, 10);
 
 -- --------------------------------------------------------
 
@@ -240,44 +240,47 @@ INSERT INTO `Orders` (`orderID`, `customerID`, `courierID`, `timestamp`) VALUES
 
 CREATE TABLE `OrderStatus` (
   `orderStatusID` smallint(5) UNSIGNED NOT NULL,
-  `orderID` smallint(5) UNSIGNED NOT NULL,
-  `status` enum('TX OK','TX FAIL','TX CONFIRM','PREPARING','READY','EN ROUTE','DELIVERED','CANCELED','RETURNED') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `timestamp` datetime NOT NULL
+  `status` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `OrderStatus`
 --
 
-INSERT INTO `OrderStatus` (`orderStatusID`, `orderID`, `status`, `timestamp`) VALUES
-(1, 1, 'DELIVERED', '2018-02-01 19:23:55'),
-(2, 2, 'CANCELED', '2018-02-01 19:32:59'),
-(3, 3, 'DELIVERED', '2018-02-01 20:12:12'),
-(4, 4, 'DELIVERED', '2018-02-01 21:32:14'),
-(5, 5, 'RETURNED', '2018-02-01 22:02:15'),
-(6, 6, 'DELIVERED', '2018-02-02 19:03:17'),
-(7, 7, 'DELIVERED', '2018-02-02 19:21:37'),
-(8, 8, 'EN ROUTE', '2018-02-03 12:52:18'),
-(9, 9, 'READY', '2018-02-03 12:55:17'),
-(10, 10, 'TX CONFIRM', '2018-02-03 13:01:06'),
-(11, 10, 'DELIVERED', '2018-02-03 13:15:17');
+INSERT INTO `OrderStatus` (`orderStatusID`, `status`) VALUES
+(1, 'TX OK'),
+(2, 'TX FAIL'),
+(3, 'TX CONFIRM'),
+(4, 'PREPARING'),
+(5, 'READY'),
+(6, 'EN ROUTE'),
+(7, 'DELIVERED'),
+(8, 'CANCELED'),
+(9, 'RETURNED');
 
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `order_summary`
--- (See below for the actual view)
+-- Table structure for table `OrderTime`
 --
-CREATE TABLE `order_summary` (
-`FIRSTNAME` varchar(20)
-,`LASTNAME` varchar(40)
-,`TIMESTAMP` datetime
-,`ORDERID` smallint(5) unsigned
-,`QUANTITY` tinyint(4) unsigned
-,`DISH` varchar(60)
-,`UNIT_PRICE` decimal(4,2)
-,`TOTAL` decimal(8,2)
-);
+
+CREATE TABLE `OrderTime` (
+  `orderID` smallint(5) UNSIGNED NOT NULL,
+  `orderStatusID` smallint(5) UNSIGNED NOT NULL,
+  `datetime` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `OrderTime`
+--
+
+INSERT INTO `OrderTime` (`orderID`, `orderStatusID`, `datetime`) VALUES
+(1, 1, '2018-02-01 17:02:00'),
+(1, 3, '2018-02-01 17:02:20'),
+(1, 4, '2018-02-01 17:04:00'),
+(1, 5, '2018-02-01 17:05:30'),
+(1, 6, '2018-02-01 17:06:23'),
+(1, 7, '2018-02-01 17:18:15');
 
 -- --------------------------------------------------------
 
@@ -328,15 +331,6 @@ DROP TABLE IF EXISTS `courier_details`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `courier_details`  AS  select `US`.`firstName` AS `FIRSTNAME`,`US`.`lastName` AS `LASTNAME`,`AC`.`username` AS `USERNAME`,`AC`.`email` AS `EMAIL`,`AC`.`userType` AS `USERTYPE` from (`users` `US` join `accesscontrol` `AC` on((`US`.`accessControlID` = `AC`.`accessControlID`))) where (`AC`.`userType` = 'COURIER') order by `US`.`lastName` ;
 
--- --------------------------------------------------------
-
---
--- Structure for view `order_summary`
---
-DROP TABLE IF EXISTS `order_summary`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `order_summary`  AS  select `U`.`firstName` AS `FIRSTNAME`,`U`.`lastName` AS `LASTNAME`,`O`.`timestamp` AS `TIMESTAMP`,`O`.`orderID` AS `ORDERID`,`B`.`quantity` AS `QUANTITY`,`D`.`dish` AS `DISH`,`I`.`price` AS `UNIT_PRICE`,(`B`.`quantity` * `I`.`price`) AS `TOTAL` from ((((`users` `U` join `orders` `O` on((`O`.`customerID` = `U`.`userID`))) join `basket` `B` on((`B`.`orderID` = `O`.`orderID`))) join `items` `I` on((`I`.`itemID` = `B`.`itemID`))) join `dishes` `D` on((`D`.`dishID` = `I`.`dishID`))) order by `O`.`orderID` ;
-
 --
 -- Indexes for dumped tables
 --
@@ -386,8 +380,14 @@ ALTER TABLE `Orders`
 -- Indexes for table `OrderStatus`
 --
 ALTER TABLE `OrderStatus`
-  ADD PRIMARY KEY (`orderStatusID`),
-  ADD KEY `orderID` (`orderID`);
+  ADD PRIMARY KEY (`orderStatusID`);
+
+--
+-- Indexes for table `OrderTime`
+--
+ALTER TABLE `OrderTime`
+  ADD KEY `orderID` (`orderID`),
+  ADD KEY `orderStatusID` (`orderStatusID`);
 
 --
 -- Indexes for table `Users`
@@ -404,7 +404,7 @@ ALTER TABLE `Users`
 -- AUTO_INCREMENT for table `AccessControl`
 --
 ALTER TABLE `AccessControl`
-  MODIFY `accessControlID` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `accessControlID` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `Address`
 --
@@ -466,13 +466,8 @@ ALTER TABLE `Orders`
   ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`customerID`) REFERENCES `Users` (`userID`);
 
 --
--- Constraints for table `OrderStatus`
+-- Constraints for table `OrderTime`
 --
-ALTER TABLE `OrderStatus`
-  ADD CONSTRAINT `orderstatus_ibfk_1` FOREIGN KEY (`orderID`) REFERENCES `Orders` (`orderID`);
-
---
--- Constraints for table `Users`
---
-ALTER TABLE `Users`
-  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`accessControlID`) REFERENCES `AccessControl` (`accessControlID`);
+ALTER TABLE `OrderTime`
+  ADD CONSTRAINT `ordertime_ibfk_1` FOREIGN KEY (`orderID`) REFERENCES `Orders` (`orderID`),
+  ADD CONSTRAINT `ordertime_ibfk_2` FOREIGN KEY (`orderStatusID`) REFERENCES `OrderStatus` (`orderStatusID`);
